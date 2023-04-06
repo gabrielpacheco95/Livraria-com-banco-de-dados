@@ -96,6 +96,7 @@ public class LivrariaPOO {
         String cnpj = null;
         String endereco;
         String telefone;
+        ClienteServicos cClienteS = ServicosFactory.getClienteServicos();
 
         System.out.println("-- Cadastro de Cliente --");
         System.out.print("Informe o CPF: ");
@@ -115,7 +116,7 @@ public class LivrariaPOO {
                 }
             }
         } while (!Validadores.isCPF(cpf));
-        if (cadCliente.getClienteCPF(cpf) != null) {
+        if (cClienteS.buscarClientebyCPF(cpf) !=null ) {
             System.out.println("Cliente Já Cadastrado");
         } else {
             System.out.print("Informe o nome: ");
@@ -126,7 +127,6 @@ public class LivrariaPOO {
             endereco = leia.nextLine();
             idCliente = cadCliente.geraID();
             Cliente cli = new Cliente(idCliente, nomeCliente, cpf, cnpj, endereco, telefone);
-            ClienteServicos cClienteS = ServicosFactory.getClienteServicos();
             cClienteS.cadCliente(cli);
             cadCliente.addCliente(cli);
             System.out.println("Cliente Cadastrado com sucesso");

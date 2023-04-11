@@ -18,6 +18,7 @@ import model.Editora;
 import model.Livro;
 import model.VendaLivro;
 import services.ClienteServicos;
+import services.EditoraServicos;
 import util.Validadores;
 
 /**
@@ -193,13 +194,20 @@ public class LivrariaPOO {
                                 break;
                             case 2:
                                 System.out.println("-- Editar --");
-                                editarCliente();
-                                break;
+                               if (opM ==1) {
+                                   editarCliente();
+                               } else if (opM==2){
+                                   editarEditora();
+                                   break;
+                               }
                             case 3:
                                 System.out.println("-- Listar --");
-                                System.out.println(cadCliente.getClientes().toString());
-                                
+                                if (opM ==1 ){
+                                    System.out.println(cadCliente.getClientes().toString());
+                                } else if (opM ==2){
+                                System.out.println(cadEditora.getEditoras());
                                 break;
+                                }
                             case 4:
                                 System.out.println("-- Aplicação Encerrada -- ");
                                 break;
@@ -298,6 +306,7 @@ public class LivrariaPOO {
         String endereco;
         String telefone;
         String gerente;
+        EditoraServicos cEditoras = ServicosFactory.getEditoraServicos();
 
         System.out.println("-- Cadastrar Editora --");
         System.out.print("Informe o CNPJ da Editora: ");
@@ -355,11 +364,11 @@ public class LivrariaPOO {
                 switch (opEditar) {
                     case 1:
                         System.out.print("Informe o nome: ");
-                        edi.setNmEditora(leia.nextLine());
+                        edi.setNmEditora(leia.nextLine().toUpperCase());
                         break;
                     case 2:
                         System.out.print("Informe o endereço: ");
-                        edi.setEndereco(leia.nextLine());
+                        edi.setEndereco(leia.nextLine().toUpperCase());
                         break;
                     case 3:
                         System.out.println("Informe o fone: ");
@@ -384,6 +393,7 @@ public class LivrariaPOO {
             }
         } else {
             System.out.println("CNPJ inválido!");
+            EditoraServicos cEditoras = ServicosFactory.getEditoraServicos();
         }
     }//fim do editarEditora
 
@@ -412,6 +422,7 @@ public class LivrariaPOO {
         System.out.println("-- Deletar Editora --");
         System.out.print("Informe o CNPJ: ");
         String cnpj = leia.nextLine();
+EditoraServicos cEditoras = ServicosFactory.getEditoraServicos();
 
         if (Validadores.isCNPJ(cnpj)) {
             Editora edi = cadEditora.getEditoraCNPJ(cnpj);

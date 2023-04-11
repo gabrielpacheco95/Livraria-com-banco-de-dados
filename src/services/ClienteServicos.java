@@ -16,28 +16,28 @@ import model.Cliente;
  */
 public class ClienteServicos {
 
-    public void cadCliente(Cliente CVO) {
+     public void cadCliente(Cliente cVO) {
         ClienteDAO cDAO = DAOFactory.getClienteDAO();
-        cDAO.cadastrarCLienteDAO(CVO);
+        cDAO.cadastrarClienteDAO(cVO);
     }
-
-    public void atualizarCliente(Cliente CVO) {
+    
+    public void atualizarCliente(Cliente cVO){
         ClienteDAO cDAO = DAOFactory.getClienteDAO();
-        cDAO.atualizarClienteByDoc(CVO);
+        cDAO.atualizaClienteByDoc(cVO);
     }
-
-    public void deletarCliente(String cpf) {
+    
+    public void deletarCliente(String cpf){
         ClienteDAO cDAO = DAOFactory.getClienteDAO();
         cDAO.deletarClienteDAO(cpf);
     }
-
-    public Cliente buscarClientebyCPF(String cpf) {
+    
+    public Cliente buscarClientebyCPF(String cpf){
         ClienteDAO cDAO = DAOFactory.getClienteDAO();
-        return cDAO.getClientesDAO(cpf);
+        return cDAO.getClienteByDoc(cpf);
     }
-   public ArrayList<Cliente> getClientes(){
-       ClienteDAO cDAO = DAOFactory.getClienteDAO();
-       return cDAO.getClienteByDoc();
-   }
-   
+    
+    public ArrayList<Cliente> getClientes() {
+        ClienteDAO cDAO = DAOFactory.getClienteDAO();
+        return cDAO.getClientesDAO();
+    }
 }

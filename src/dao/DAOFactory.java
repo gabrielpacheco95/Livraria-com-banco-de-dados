@@ -15,4 +15,9 @@ public class DAOFactory {
     public static ClienteDAO getClienteDAO(){
         return cDAO;
     }
+    
+   private static EditoraDAO eDao = new EditoraDAO();
+   public static EditoraDAO getEditoraDAO(){
+  return eDao;
+}
 }

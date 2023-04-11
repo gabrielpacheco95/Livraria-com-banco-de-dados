@@ -6,6 +6,7 @@
 package dao;
 
 import services.ClienteServicos;
+import services.EditoraServicos;
 
 /**
  *
@@ -17,5 +18,10 @@ public class ServicosFactory {
 
     public static ClienteServicos getClienteServicos() {
         return cServicos;
+    }
+    private static EditoraServicos eServicos = new EditoraServicos();
+
+    public static EditoraServicos getEditoraServicos() {
+        return eServicos;
     }
 }

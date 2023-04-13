@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package services;
 
 import services.ClienteServicos;
 import services.EditoraServicos;
@@ -23,5 +23,11 @@ public class ServicosFactory {
 
     public static EditoraServicos getEditoraServicos() {
         return eServicos;
+    }
+
+    private static LivroServicos livroS = new LivroServicos();
+    
+    public static LivroServicos getLivroServicos() {
+        return livroS;
     }
 }

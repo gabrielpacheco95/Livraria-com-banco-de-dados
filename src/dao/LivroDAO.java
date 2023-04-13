@@ -5,6 +5,7 @@
  */
 package dao;
 
+import services.ServicosFactory;
 import conexão.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +25,7 @@ public class LivroDAO {
     public void cadastrarLivroDAO(Livro LivroVO) {
         try {
             Connection con = Conexao.getConexao();
-            String sql = "insert into livros values (null,?,?,?,?,?,?,?";
+            String sql = "insert into livros values (null,?,?,?,?,?,?,?)";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, LivroVO.getTítulo());
             pst.setString(2, LivroVO.getAutor());
@@ -51,7 +52,7 @@ public class LivroDAO {
             while (rs.next()) {
                 Livro li = new Livro();
                 li.setIdLivro(rs.getInt("idlivro"));
-                li.setTítulo(rs.getString("título"));
+                li.setTítulo(rs.getString("titulo"));
                 li.setAssunto(rs.getString("assunto"));
                 li.setAutor(rs.getString("autor"));
                 li.setIsbn(rs.getString("isbn"));
@@ -72,14 +73,14 @@ public class LivroDAO {
         try {
             Connection con = Conexao.getConexao();
             String sql = "select livros.*, e.cnpj from livros "
-                    + "join editoras e using(ideditora); where isbn = ?";
+                    + "join editoras e using(ideditora) where isbn = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, isbn);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
 
                 li.setIdLivro(rs.getInt("idlivro"));
-                li.setTítulo(rs.getString("título"));
+                li.setTítulo(rs.getString("titulo"));
                 li.setAssunto(rs.getString("assunto"));
                 li.setAutor(rs.getString("autor"));
                 li.setIsbn(rs.getString("isbn"));

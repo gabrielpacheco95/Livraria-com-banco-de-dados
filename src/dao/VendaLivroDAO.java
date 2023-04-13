@@ -8,6 +8,7 @@ package dao;
 import conexão.Conexao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.VendaLivro;
 
@@ -29,6 +30,16 @@ public class VendaLivroDAO {
             pst.setFloat(3, vlVO.getSubTotal());
             pst.executeUpdate();
 
+            //Pegar do Banco o ultimo id inserido na tabela pedidos
+            String sqlIdPedido = "select max (idPedido) as idpedido pedidos";
+            PreparedStatement pst2 = con.prepareStatement(sqlIdPedido);
+            ResultSet rsIdPed = pst2.executeQuery();
+            int idPedido = 0;
+            while (rsIdPed.next()) {
+                idPedido = rsIdPed.getInt("idPedido");
+            }
+            
+            
         } catch (SQLException e) {
             System.out.println("Erro ao realizar venta\n" + e.getMessage());
         }

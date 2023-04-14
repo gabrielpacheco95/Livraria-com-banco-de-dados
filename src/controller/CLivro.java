@@ -6,7 +6,7 @@
 package controller;
 
 import java.util.ArrayList;
-import livrariapoo.LivrariaPOO;
+import livrariaBD.LivrariaBD;
 import model.Livro;
 
 
@@ -49,7 +49,7 @@ public class CLivro {
         l1.setEstoque(20);
         l1.setAssunto("Aventura");
         l1.setPreco(40);
-        l1.setIdEditora(LivrariaPOO.cadEditora.getEditoraCNPJ ("98742369847521"));
+        l1.setIdEditora(LivrariaBD.cadEditora.getEditoraCNPJ ("98742369847521"));
         this.addLivro(l1);
     }
 

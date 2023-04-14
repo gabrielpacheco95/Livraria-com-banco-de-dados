@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package livrariapoo;
+package livrariaBD;
 
 import controller.CCliente;
 import controller.CEditora;
@@ -20,13 +20,14 @@ import model.VendaLivro;
 import services.ClienteServicos;
 import services.EditoraServicos;
 import services.LivroServicos;
+import services.VendaLivroServicos;
 import util.Validadores;
 
 /**
  *
  * @author 311101245
  */
-public class LivrariaPOO {
+public class LivrariaBD {
 
     public static CCliente cadCliente = new CCliente();
     public static CEditora cadEditora = new CEditora();
@@ -108,7 +109,7 @@ public class LivrariaPOO {
             cpf = leia.nextLine();
             cpfIs = Validadores.isCPF(cpf);
             if (!cpfIs) {
-                System.out.println("CPF Inválido" + "\nDeseja tenta novamente? 1-Sim 2-Não");
+                System.out.println("CPF Inv1álido" + "\nDeseja tenta novamente? 1-Sim 2-Não");
                 opCPF = leiaNumInt();
                 if (opCPF == 1) {
                     System.out.print("Informe o CPF: ");
@@ -118,7 +119,7 @@ public class LivrariaPOO {
                 }
             }
         } while (!Validadores.isCPF(cpf));
-        if (cClienteS.buscarClientebyCPF(cpf) != null) {
+        if (cClienteS.buscarClientebyCPF(cpf).getCpf() != null) {
             System.out.println("Cliente Já Cadastrado");
         } else {
             System.out.print("Informe o nome: ");
@@ -129,8 +130,8 @@ public class LivrariaPOO {
             endereco = leia.nextLine();
             idCliente = cadCliente.geraID();
             Cliente cli = new Cliente(idCliente, nomeCliente, cpf, cnpj, endereco, telefone);
+            //cadCliente.addCliente(cli);
             cClienteS.cadCliente(cli);
-            cadCliente.addCliente(cli);
             System.out.println("Cliente Cadastrado com sucesso");
 
         }
@@ -413,7 +414,7 @@ public class LivrariaPOO {
 
     private static void listarClientes() {
         ClienteServicos clienteS = ServicosFactory.getClienteServicos();
-        for (Cliente cli : cadCliente.getClientes()) {
+        for (Cliente cli : clienteS.getClientes()) {
             System.out.println("---");
             System.out.println("CPF:\t" + cli.getCpf());
             System.out.println("Nome:\t" + cli.getNomeCliente());
@@ -499,13 +500,13 @@ public class LivrariaPOO {
             System.out.println("0 - Cancelar");
             System.out.print("Digite aqui: ");
             int op = leiaNumInt();
-            if (op == 1 || op == 3) {        
+            if (op == 1 || op == 3) {
                 System.out.println("Estoque atual:\t" + li.getEstoque());
                 System.out.print("Informe novo estoque: ");
                 li.setEstoque(leiaNumInt());
             }
             if (op == 2 || op == 3) {
-                 System.out.println("Preço atual:\t" + li.getPreco());
+                System.out.println("Preço atual:\t" + li.getPreco());
                 System.out.print("Informe novo preço: ");
                 li.setPreco(leiaNumFloat());
             }
@@ -545,7 +546,7 @@ public class LivrariaPOO {
         System.out.println("-- Deletar Livro -- ");
         System.out.print("Informe o ISBN: ");
         String isbn = leia.nextLine();
-        
+
         //Livro li = cadLivro.getLivroISBN(isbn);
         Livro li = livroS.buscaLivroISBN(isbn);
         if (li != null) {
@@ -558,6 +559,10 @@ public class LivrariaPOO {
     }
 
     private static void vendaLivro() {
+        VendaLivroServicos vlS = ServicosFactory.getVendaLivros();
+        ClienteServicos clienteS = ServicosFactory.getClienteServicos();
+        LivroServicos livroS = ServicosFactory.getLivroServicos();
+
         int idVendaLivro;
         Cliente idCliente = null;
         ArrayList<Livro> livros = new ArrayList<>();
@@ -568,14 +573,15 @@ public class LivrariaPOO {
             System.out.print("Informe o CPF do Cliente: ");
             String CPF = leia.nextLine();
             if (Validadores.isCPF(CPF)) {
-                idCliente = cadCliente.getClienteCPF(CPF);
-                if (idCliente == null) {
+                //idCliente = cadCliente.getClienteCPF(CPF);
+                idCliente = clienteS.buscarClientebyCPF(CPF);
+                if (idCliente.getCpf() == null) {
                     System.out.println("Cliente não cadastrado!");
                 }
             } else {
                 System.out.println("CPF INVÀLIDO");
             }
-        } while (idCliente == null);
+        } while (idCliente.getCpf() == null);
 
         boolean venda = true;
 
@@ -586,23 +592,34 @@ public class LivrariaPOO {
             do {
                 System.out.print("Informe o ISBN:");
                 Isbn = leia.nextLine();
-                li = cadLivro.getLivroISBN(Isbn);
-                if (li == null);
-                System.out.println("Livro não encontrado, tente novamente");
-
+                //li = cadLivro.getLivroISBN(Isbn); ANTES
+                li = livroS.buscaLivroISBN(Isbn); //AGORA
+                if (li.getIsbn() == null) {
+                    System.out.println("Livro não encontrado, tente novamente");
+                }
+            } while (li.getIsbn() == null);
+            if (li.getEstoque()>0) {
                 livros.add(li);
-                cadLivro.atualizaEstoqueLivro(li.getIsbn());
+                //cadLivro.atualizaEstoqueLivro(li.getIsbn()); ANTES
+                int estoque = li.getEstoque()-1; //AGORA
+                li.setEstoque(estoque);
+                livroS.atualizarLivro(li);
                 subTotal += li.getPreco();
-                System.out.println("Deseja comprar mais livros?"
+                
+            }else{
+                 System.out.println(li.getTítulo() + "não tem estoque");
+            }
+            System.out.println("Deseja comprar mais livros?"
                         + "\n1 - Sim | 2- Não"
                         + "\n Digite: ");
                 if (leiaNumInt() == 2) {
                     venda = false;
                 }
-            } while (li == null);
             idVendaLivro = cadVendaLivro.geraID();
             VendaLivro vl = new VendaLivro(idVendaLivro, idCliente, livros, subTotal, dataVenda);
-            cadVendaLivro.addVendaLivro(vl);
+            //cadVendaLivro.addVendaLivro(vl); ANTES
+            vlS.VendaLivros(vl); // AGORA114
+            
             System.out.println(" -- VENDA -- " + vl.toString());
         } while (venda);
     }

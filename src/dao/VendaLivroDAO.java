@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Livro;
 import model.VendaLivro;
 
 /**
@@ -31,19 +32,25 @@ public class VendaLivroDAO {
             pst.executeUpdate();
 
             //Pegar do Banco o ultimo id inserido na tabela pedidos
-            String sqlIdPedido = "select max (idPedido) as idpedido pedidos";
+            String sqlIdPedido = "select max(idPedido) as idpedido from pedidos";
             PreparedStatement pst2 = con.prepareStatement(sqlIdPedido);
             ResultSet rsIdPed = pst2.executeQuery();
             int idPedido = 0;
             while (rsIdPed.next()) {
                 idPedido = rsIdPed.getInt("idPedido");
             }
-            
-            
+            //inserir PedidosLivros com base no ArrayList de livros da venda
+            String sqlPedLivros = "insert into pedidoslivros values (?,?)";
+            PreparedStatement pst3 = con.prepareStatement(sqlPedLivros);
+            for(Livro livro: vlVO.getLivros()){
+                pst3.setInt(1,idPedido);
+                pst3.setInt (2, livro.getIdLivro());
+                pst3. executeUpdate();
+            }
         } catch (SQLException e) {
             System.out.println("Erro ao realizar venta\n" + e.getMessage());
         }
 
-    }
+    } // fim do cadastro
 
 }

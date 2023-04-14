@@ -5,8 +5,7 @@
  */
 package services;
 
-import services.ClienteServicos;
-import services.EditoraServicos;
+
 
 /**
  *
@@ -29,5 +28,10 @@ public class ServicosFactory {
     
     public static LivroServicos getLivroServicos() {
         return livroS;
+    }
+    private static VendaLivroServicos vls = new VendaLivroServicos();
+    
+    public static VendaLivroServicos getVendaLivros(){
+        return vls;
     }
 }

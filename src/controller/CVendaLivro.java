@@ -7,7 +7,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import livrariapoo.LivrariaPOO;
+import livrariaBD.LivrariaBD;
 import model.Livro;
 import model.VendaLivro;
 
@@ -48,10 +48,10 @@ public class CVendaLivro {
     public void mockVendaLivros() {
         VendaLivro v1 = new VendaLivro();
         v1.setIdVendaLivro(this.geraID());
-        v1.setIdCliente(LivrariaPOO.cadCliente.getClienteCPF ("12387945836"));
+        v1.setIdCliente(LivrariaBD.cadCliente.getClienteCPF ("12387945836"));
         v1.setDataVenda(LocalDate.parse("2023-03-14"));
         ArrayList<Livro>livros1 = new ArrayList<>();
-        livros1.add(LivrariaPOO.cadLivro.getLivroISBN("12387945836"));
+        livros1.add(LivrariaBD.cadLivro.getLivroISBN("12387945836"));
         v1.setLivros(livros1);
         v1.setSubTotal((float)100.00);
        

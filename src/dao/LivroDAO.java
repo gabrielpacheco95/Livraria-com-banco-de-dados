@@ -97,7 +97,7 @@ public class LivroDAO {
     public void atualizarLivroDAO(Livro LivroVO) {
         try {
             Connection con = Conexao.getConexao();
-            String sql = "updare livros estoque = ? preco = ? where isbn = ?";
+            String sql = "update livros set estoque = ?, preco = ? where isbn = ?";
             PreparedStatement pst = con.prepareStatement(sql);
 
             pst.setInt(1, LivroVO.getEstoque());
